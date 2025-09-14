@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brain Rush 🧠⚡</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+<title>Brain Rush 🧠⚡</title>
+<style>
         * {
             margin: 0;
             padding: 0;
@@ -70,49 +71,6 @@
 
         .hidden {
             display: none;
-        }
-
-        /* Navigation Buttons */
-        .nav-controls {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-        }
-
-        .nav-icon-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .nav-icon-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-
-        .nav-icon-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
-
-        .nav-icon-btn:disabled:hover {
-            transform: none;
-            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Login Screen Styles */
@@ -211,7 +169,7 @@
         .achievement-section {
             margin-top: 20px;
             text-align: left;
-            margin-bottom: 80px;
+            margin-bottom: 80px; /* Added margin to prevent overlapping */
         }
 
         .achievement {
@@ -244,7 +202,6 @@
             justify-content: space-between;
             margin-bottom: 20px;
             font-weight: bold;
-            margin-top: 50px;
         }
 
         .stat-item {
@@ -449,188 +406,219 @@
             color: #48dbfb;
             margin-bottom: 10px;
         }
+    
+/* top-right navigation for game/profile */
+.top-nav {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    display: flex;
+    gap: 8px;
+    z-index: 20;
+}
+.nav-top-btn {
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
+    color: white;
+}
+.nav-top-btn:hover { transform: translateY(-2px); }
 
-        /* Screen-specific nav controls */
-        .profile-nav .nav-icon-btn:first-child { visibility: hidden; }
-        .login-nav .nav-icon-btn { visibility: hidden; }
-    </style>
+
+/* Accurate 2cm positional adjustments */
+.top-nav {
+    top: calc(12px - 2cm);
+}
+
+
+/* Adjust Home and Back button upward by 2 cm, keep dev-credit in original position */
+.top-nav {
+    top: calc(12px - 2cm);
+}
+
+.container {
+    padding: 15px;
+    max-width: 100%;
+}
+
+.game-screen {
+    padding: 20px 10px;
+}
+
+button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.input-field {
+    width: 100%;
+    font-size: 1em;
+}
+
+.stats-grid {
+    grid-template-columns: 1fr;
+}
+
+.mode-selector {
+    grid-template-columns: 1fr;
+}
+
+.options.grid-4 {
+    grid-template-columns: 1fr 1fr;
+}
+
+.options.grid-2 {
+    grid-template-columns: 1fr;
+}
+
+.stat-row {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.achievement {
+    flex-direction: column;
+    align-items: flex-start;
+}
+</style>
 </head>
 <body>
-    <div class="container">
-        <!-- Login Screen -->
-        <div id="loginScreen" class="game-screen">
-            <div class="nav-controls login-nav">
-                <button class="nav-icon-btn" onclick="goBack()" disabled>←</button>
-                <button class="nav-icon-btn" onclick="goHome()" disabled>🏠</button>
-            </div>
-            
-            <div class="header">
-                <div class="logo">Brain Rush 🧠⚡</div>
-                <div class="tagline">60 seconds. Pure mental adrenaline.</div>
-            </div>
-            
-            <div class="login-form">
-                <div class="input-group">
-                    <label for="playerName">Enter Your Name:</label>
-                    <input type="text" id="playerName" class="input-field" placeholder="Your awesome name..." maxlength="20">
-                </div>
-                <button class="start-btn" onclick="loginPlayer()">START YOUR JOURNEY! 🚀</button>
-            </div>
-            
-            <div style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">
+<div class="container">
+<!-- Login Screen -->
+<div class="game-screen" id="loginScreen">
+<div class="header">
+<div class="logo">Brain Rush 🧠⚡</div>
+<div class="tagline">60 seconds. Pure mental adrenaline.</div>
+</div>
+<div class="login-form">
+<div class="input-group">
+<label for="playerName">Enter Your Name:</label>
+<input class="input-field" id="playerName" maxlength="20" placeholder="Your awesome name..." type="text"/>
+</div>
+<button class="start-btn" onclick="loginPlayer()">START YOUR JOURNEY! 🚀</button>
+</div>
+<div style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">
                 Your progress will be saved automatically!
             </div>
-        </div>
-
-        <!-- Profile Screen -->
-        <div id="profileScreen" class="game-screen hidden">
-            <div class="nav-controls profile-nav">
-                <button class="nav-icon-btn" onclick="goBack()" disabled>←</button>
-                <button class="nav-icon-btn" onclick="goHome()">🏠</button>
+</div>
+<!-- Profile Screen -->
+<div class="game-screen hidden" id="profileScreen">
+<div class="top-nav">
+<button class="nav-top-btn" onclick="showMainMenu()">🏠 Home</button>
+</div>
+<div class="profile-header">
+<div class="profile-name" id="profileName">Player</div>
+<div class="rating-badge" id="ratingBadge">🎯 Novice Calculator</div>
+</div>
+<div class="stats-grid">
+<div class="stat-card">
+<div class="stat-value" id="highScore">0</div>
+<div class="stat-label">Highest Score</div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="avgScore">0</div>
+<div class="stat-label">Average Score</div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="maxStreak">0</div>
+<div class="stat-label">Best Streak</div>
+</div>
+<div class="stat-card">
+<div class="stat-value" id="gamesPlayed">0</div>
+<div class="stat-label">Games Played</div>
+</div>
+</div>
+<div class="achievement-section">
+<h3 style="margin-bottom: 15px;">🏆 Recent Achievements</h3>
+<div id="achievementsList">
+<div class="achievement">
+<span class="achievement-icon">🎯</span>
+<span>Welcome to Brain Rush! Start your first game to unlock more achievements.</span>
+</div>
+</div>
+</div>
+<button class="start-btn" onclick="showMainMenu()">PLAY GAME 🎮</button>
+<button class="nav-btn" onclick="resetProfile()">Reset Profile</button>
+<div class="dev-credit">
+                Developed &amp; Built by Zaid
             </div>
-            
-            <div class="profile-header">
-                <div class="profile-name" id="profileName">Player</div>
-                <div class="rating-badge" id="ratingBadge">🎯 Novice Calculator</div>
-            </div>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="highScore">0</div>
-                    <div class="stat-label">Highest Score</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="avgScore">0</div>
-                    <div class="stat-label">Average Score</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="maxStreak">0</div>
-                    <div class="stat-label">Best Streak</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="gamesPlayed">0</div>
-                    <div class="stat-label">Games Played</div>
-                </div>
-            </div>
-
-            <div class="achievement-section">
-                <h3 style="margin-bottom: 15px;">🏆 Recent Achievements</h3>
-                <div id="achievementsList">
-                    <div class="achievement">
-                        <span class="achievement-icon">🎯</span>
-                        <span>Welcome to Brain Rush! Start your first game to unlock more achievements.</span>
-                    </div>
-                </div>
-            </div>
-
-            <button class="start-btn" onclick="showMainMenu()">PLAY GAME 🎮</button>
-            <button class="nav-btn" onclick="resetProfile()">Reset Profile</button>
-
-            <div class="dev-credit">
-                Developed & Built by Zaid
-            </div>
-        </div>
-
-        <!-- Main Menu -->
-        <div id="mainMenu" class="game-screen hidden">
-            <div class="nav-controls">
-                <button class="nav-icon-btn" onclick="goBack()">←</button>
-                <button class="nav-icon-btn" onclick="goHome()" disabled>🏠</button>
-            </div>
-            
-            <div class="welcome-user" id="welcomeMessage">Welcome back, Champion!</div>
-            
-            <div class="header">
-                <div class="logo">Brain Rush 🧠⚡</div>
-            </div>
-            
-            <div class="mode-selector">
-                <button class="mode-btn" onclick="selectMode('speed')">⚡ Speed Math</button>
-                <button class="mode-btn" onclick="selectMode('oddeven')">🎲 Odd/Even</button>
-                <button class="mode-btn" onclick="selectMode('compare')">⚖️ Compare</button>
-                <button class="mode-btn" onclick="selectMode('make100')">💯 Make 100</button>
-                <button class="mode-btn" onclick="selectMode('estimate')">🎯 Estimate</button>
-                <button class="mode-btn" onclick="selectMode('mixed')">🔥 Mixed Rush</button>
-            </div>
-            
-            <button class="start-btn" onclick="startGame()">START RUSH! 🚀</button>
-            
-            <div style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">
+</div>
+<!-- Main Menu -->
+<div class="game-screen hidden" id="mainMenu">
+<div class="welcome-user" id="welcomeMessage">Welcome back, Champion!</div>
+<div class="header">
+<div class="logo">Brain Rush 🧠⚡</div>
+</div>
+<div class="mode-selector">
+<button class="mode-btn" onclick="selectMode('speed')">⚡ Speed Math</button>
+<button class="mode-btn" onclick="selectMode('oddeven')">🎲 Odd/Even</button>
+<button class="mode-btn" onclick="selectMode('compare')">⚖️ Compare</button>
+<button class="mode-btn" onclick="selectMode('make100')">💯 Make 100</button>
+<button class="mode-btn" onclick="selectMode('estimate')">🎯 Estimate</button>
+<button class="mode-btn" onclick="selectMode('mixed')">🔥 Mixed Rush</button>
+</div>
+<button class="start-btn" onclick="startGame()">START RUSH! 🚀</button>
+<div style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">
                 Selected Mode: <span id="selectedMode">Mixed Rush</span>
-            </div>
-
-            <div style="margin-top: 15px;">
-                <button class="nav-btn" onclick="showProfile()">View Profile 👤</button>
-            </div>
-        </div>
-
-        <!-- Game Screen -->
-        <div id="gameScreen" class="game-screen hidden">
-            <div class="nav-controls">
-                <button class="nav-icon-btn" onclick="goBack()">←</button>
-                <button class="nav-icon-btn" onclick="goHome()">🏠</button>
-            </div>
-            
-            <div class="stats">
-                <div class="stat-item">Score: <span id="score">0</span></div>
-                <div class="stat-item timer">Time: <span id="timer">60</span>s</div>
-                <div class="stat-item">Streak: <span id="streak">0</span></div>
-            </div>
-            
-            <div class="question-area">
-                <div class="question" id="question">Loading...</div>
-                <div class="options" id="options">
-                    <!-- Options will be generated here -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Game Over Screen -->
-        <div id="gameOverScreen" class="game-screen hidden">
-            <div class="nav-controls">
-                <button class="nav-icon-btn" onclick="goBack()">←</button>
-                <button class="nav-icon-btn" onclick="goHome()">🏠</button>
-            </div>
-            
-            <div class="header">
-                <div style="font-size: 2em; margin-bottom: 10px;">🎯 RUSH COMPLETE!</div>
-            </div>
-            
-            <div class="final-score" id="finalScore">0</div>
-            
-            <div class="performance-stats">
-                <div class="stat-row">
-                    <span>Questions Answered:</span>
-                    <span id="totalQuestions">0</span>
-                </div>
-                <div class="stat-row">
-                    <span>Accuracy:</span>
-                    <span id="accuracy">0%</span>
-                </div>
-                <div class="stat-row">
-                    <span>Best Streak:</span>
-                    <span id="bestStreak">0</span>
-                </div>
-                <div class="stat-row">
-                    <span>New Rating:</span>
-                    <span id="newRating">Novice</span>
-                </div>
-            </div>
-            
-            <div id="newAchievements" style="margin: 20px 0;"></div>
-            
-            <button class="start-btn" onclick="restartGame()">RUSH AGAIN! 🔥</button>
-            <div>
-                <button class="nav-btn" onclick="showProfile()">View Profile</button>
-                <button class="nav-btn" onclick="backToMenu()">Main Menu</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Navigation Stack to track screen history
-        let navigationStack = [];
-
+</div>
+<div style="margin-top: 15px;">
+<button class="nav-btn" onclick="showProfile()">View Profile 👤</button>
+</div>
+</div>
+<!-- Game Screen -->
+<div class="game-screen hidden" id="gameScreen">
+<div class="top-nav">
+<button class="nav-top-btn" onclick="showMainMenu()">🏠 Home</button>
+<button class="nav-top-btn" onclick="showProfile()">⬅ Back</button>
+</div>
+<div class="stats">
+<div class="stat-item">Score: <span id="score">0</span></div>
+<div class="stat-item timer">Time: <span id="timer">60</span>s</div>
+<div class="stat-item">Streak: <span id="streak">0</span></div>
+</div>
+<div class="question-area">
+<div class="question" id="question">Loading...</div>
+<div class="options" id="options">
+<!-- Options will be generated here -->
+</div>
+</div>
+</div>
+<!-- Game Over Screen -->
+<div class="game-screen hidden" id="gameOverScreen">
+<div class="header">
+<div style="font-size: 2em; margin-bottom: 10px;">🎯 RUSH COMPLETE!</div>
+</div>
+<div class="final-score" id="finalScore">0</div>
+<div class="performance-stats">
+<div class="stat-row">
+<span>Questions Answered:</span>
+<span id="totalQuestions">0</span>
+</div>
+<div class="stat-row">
+<span>Accuracy:</span>
+<span id="accuracy">0%</span>
+</div>
+<div class="stat-row">
+<span>Best Streak:</span>
+<span id="bestStreak">0</span>
+</div>
+<div class="stat-row">
+<span>New Rating:</span>
+<span id="newRating">Novice</span>
+</div>
+</div>
+<div id="newAchievements" style="margin: 20px 0;"></div>
+<button class="start-btn" onclick="restartGame()">RUSH AGAIN! 🔥</button>
+<div>
+<button class="nav-btn" onclick="showProfile()">View Profile</button>
+<button class="nav-btn" onclick="backToMenu()">Main Menu</button>
+</div>
+</div>
+</div>
+<script>
         // Player Data Structure
         let playerData = {
             name: '',
@@ -674,7 +662,7 @@
         // Achievements System
         const achievements = [
             { id: 'first_game', name: 'First Steps', icon: '👶', desc: 'Complete your first game' },
-            { id: 'score_50', name: 'Half Century', icon: '🎊', desc: 'Score 50+ points in a single game' },
+            { id: 'score_50', name: 'Half Century', icon: '🏏', desc: 'Score 50+ points in a single game' },
             { id: 'score_100', name: 'Century Maker', icon: '💯', desc: 'Score 100+ points in a single game' },
             { id: 'streak_10', name: 'On Fire', icon: '🔥', desc: 'Get a 10+ answer streak' },
             { id: 'streak_20', name: 'Unstoppable', icon: '⚡', desc: 'Get a 20+ answer streak' },
@@ -685,55 +673,7 @@
             { id: 'legend_status', name: 'Living Legend', icon: '👑', desc: 'Reach Legend rating' }
         ];
 
-        // Navigation Functions
-        function goHome() {
-            if (gameState.isGameActive) {
-                if (confirm('Are you sure you want to quit the current game?')) {
-                    endGame();
-                } else {
-                    return;
-                }
-            }
-            showMainMenu();
-        }
-
-        function goBack() {
-            if (navigationStack.length > 0) {
-                const previousScreen = navigationStack.pop();
-                showScreen(previousScreen, false); // false means don't add to history
-            }
-        }
-
-        function showScreen(screenId, addToHistory = true) {
-            // Hide all screens
-            const screens = ['loginScreen', 'profileScreen', 'mainMenu', 'gameScreen', 'gameOverScreen'];
-            screens.forEach(screen => {
-                document.getElementById(screen).classList.add('hidden');
-            });
-
-            // Add current screen to navigation stack if specified
-            if (addToHistory) {
-                const currentScreen = getCurrentScreen();
-                if (currentScreen && currentScreen !== screenId) {
-                    navigationStack.push(currentScreen);
-                }
-            }
-
-            // Show the requested screen
-            document.getElementById(screenId).classList.remove('hidden');
-        }
-
-        function getCurrentScreen() {
-            const screens = ['loginScreen', 'profileScreen', 'mainMenu', 'gameScreen', 'gameOverScreen'];
-            for (let screen of screens) {
-                if (!document.getElementById(screen).classList.contains('hidden')) {
-                    return screen;
-                }
-            }
-            return null;
-        }
-
-        // Question generators
+        // Question generators (same as before)
         const questionGenerators = {
             speed: () => {
                 const a = Math.floor(Math.random() * 50) + 1;
@@ -747,6 +687,59 @@
                     case '-': answer = Math.abs(a - b); break;
                     case '×': answer = a * b; break;
                 }
+                
+                const question = `${a} ${op} ${b} = ?`;
+                const options = generateOptions(answer, 4);
+                
+                return { question, answer, options, type: '4-choice' };
+            },
+            
+            oddeven: () => {
+                const a = Math.floor(Math.random() * 20) + 1;
+                const b = Math.floor(Math.random() * 20) + 1;
+                const operations = [
+                    { op: '×', result: a * b },
+                    { op: '+', result: a + b },
+                    { op: '-', result: Math.abs(a - b) }
+                ];
+                const chosen = operations[Math.floor(Math.random() * operations.length)];
+                
+                const question = `${a} ${chosen.op} ${b} is...`;
+                const answer = chosen.result % 2 === 0 ? 'EVEN' : 'ODD';
+                const options = ['ODD', 'EVEN'];
+                
+                return { question, answer, options, type: '2-choice' };
+            },
+            
+            compare: () => {
+                const expr1 = generateExpression();
+                const expr2 = generateExpression();
+                
+                const question = `${expr1.text} vs ${expr2.text}`;
+                const answer = expr1.value > expr2.value ? 'LEFT' : 'RIGHT';
+                const options = ['LEFT', 'RIGHT'];
+                
+                return { question, answer, options, type: '2-choice' };
+            },
+            
+            make100: () => {
+                const a = Math.floor(Math.random() * 40) + 20;
+                const b = Math.floor(Math.random() * 30) + 10;
+                const c = 100 - a - b;
+                
+                if (c <= 0) return questionGenerators.make100();
+                
+                const question = `Make 100: ${a} + ${b} + ?`;
+                const answer = c;
+                const options = generateOptions(answer, 4);
+                
+                return { question, answer, options, type: '4-choice' };
+            },
+            
+            estimate: () => {
+                const a = Math.floor(Math.random() * 30) + 10;
+                const b = Math.floor(Math.random() * 30) + 10;
+                const actual = a * b;
                 
                 const question = `${a} × ${b} is closest to...`;
                 const roundTo = 100;
@@ -936,12 +929,22 @@
 
         // Screen Navigation Functions
         function showProfile() {
-            showScreen('profileScreen');
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('mainMenu').classList.add('hidden');
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('gameOverScreen').classList.add('hidden');
+            document.getElementById('profileScreen').classList.remove('hidden');
+            
             updateProfileDisplay();
         }
 
         function showMainMenu() {
-            showScreen('mainMenu');
+            document.getElementById('profileScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('gameOverScreen').classList.add('hidden');
+            document.getElementById('mainMenu').classList.remove('hidden');
+            
             document.getElementById('welcomeMessage').textContent = `Welcome back, ${playerData.name}! 🧠`;
         }
 
@@ -960,6 +963,7 @@
             ratingBadge.textContent = rating.title;
             ratingBadge.className = `rating-badge rating-${playerData.rating}`;
             
+            // Update achievements display
             updateAchievementsDisplay();
         }
 
@@ -978,6 +982,7 @@
             
             container.innerHTML = '';
             
+            // Show recent achievements (last 3)
             const recentAchievements = playerData.achievements.slice(-3);
             recentAchievements.forEach(achievementId => {
                 const achievement = achievements.find(a => a.id === achievementId);
@@ -994,6 +999,7 @@
                 }
             });
             
+            // Show total achievements count
             container.innerHTML += `
                 <div class="achievement" style="opacity: 0.7; font-style: italic;">
                     <span class="achievement-icon">🏆</span>
@@ -1032,7 +1038,9 @@
             gameState.correctAnswers = 0;
             gameState.isGameActive = true;
             
-            showScreen('gameScreen');
+            document.getElementById('mainMenu').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            
             gameState.timer = setInterval(updateTimer, 1000);
             nextQuestion();
         }
@@ -1132,6 +1140,7 @@
             gameState.isGameActive = false;
             clearInterval(gameState.timer);
             
+            // Update player data
             playerData.gamesPlayed++;
             playerData.totalScore += gameState.score;
             
@@ -1148,6 +1157,7 @@
             
             updateRating();
             
+            // Check for achievements
             let newAchievements = [];
             
             if (playerData.gamesPlayed === 1) {
@@ -1172,8 +1182,11 @@
             
             savePlayerData();
             
-            showScreen('gameOverScreen');
+            // Show game over screen
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('gameOverScreen').classList.remove('hidden');
             
+            // Update final stats
             document.getElementById('finalScore').textContent = gameState.score;
             document.getElementById('totalQuestions').textContent = gameState.totalQuestions;
             document.getElementById('accuracy').textContent = Math.round(accuracy) + '%';
@@ -1184,78 +1197,27 @@
         }
 
         function restartGame() {
+            document.getElementById('gameOverScreen').classList.add('hidden');
             startGame();
         }
 
         function backToMenu() {
+            document.getElementById('gameOverScreen').classList.add('hidden');
             showMainMenu();
         }
 
         // Initialize App
         function initializeApp() {
-            navigationStack = [];
             if (loadPlayerData()) {
                 showProfile();
             } else {
-                showScreen('loginScreen', false);
+                document.getElementById('loginScreen').classList.remove('hidden');
             }
             selectMode('mixed');
         }
 
+        // Start the app
         initializeApp();
     </script>
 </body>
-</html>} ${op} ${b} = ?`;
-                const options = generateOptions(answer, 4);
-                
-                return { question, answer, options, type: '4-choice' };
-            },
-            
-            oddeven: () => {
-                const a = Math.floor(Math.random() * 20) + 1;
-                const b = Math.floor(Math.random() * 20) + 1;
-                const operations = [
-                    { op: '×', result: a * b },
-                    { op: '+', result: a + b },
-                    { op: '-', result: Math.abs(a - b) }
-                ];
-                const chosen = operations[Math.floor(Math.random() * operations.length)];
-                
-                const question = `${a} ${chosen.op} ${b} is...`;
-                const answer = chosen.result % 2 === 0 ? 'EVEN' : 'ODD';
-                const options = ['ODD', 'EVEN'];
-                
-                return { question, answer, options, type: '2-choice' };
-            },
-            
-            compare: () => {
-                const expr1 = generateExpression();
-                const expr2 = generateExpression();
-                
-                const question = `${expr1.text} vs ${expr2.text}`;
-                const answer = expr1.value > expr2.value ? 'LEFT' : 'RIGHT';
-                const options = ['LEFT', 'RIGHT'];
-                
-                return { question, answer, options, type: '2-choice' };
-            },
-            
-            make100: () => {
-                const a = Math.floor(Math.random() * 40) + 20;
-                const b = Math.floor(Math.random() * 30) + 10;
-                const c = 100 - a - b;
-                
-                if (c <= 0) return questionGenerators.make100();
-                
-                const question = `Make 100: ${a} + ${b} + ?`;
-                const answer = c;
-                const options = generateOptions(answer, 4);
-                
-                return { question, answer, options, type: '4-choice' };
-            },
-            
-            estimate: () => {
-                const a = Math.floor(Math.random() * 30) + 10;
-                const b = Math.floor(Math.random() * 30) + 10;
-                const actual = a * b;
-                
-                const question = `${a
+</html>
