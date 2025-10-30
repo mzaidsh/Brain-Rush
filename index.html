@@ -1,1223 +1,519 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
-<title>Brain Rush 🧠⚡</title>
-<style>
-        * {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎯 Bable Shooter</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0a0a0a, #1a1a1a, #2a2a2a);
-            color: white;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .logo {
-            font-size: 2.5em;
-            font-weight: bold;
-            background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .tagline {
-            font-size: 0.9em;
-            opacity: 0.8;
-            margin-top: 5px;
-        }
-
-        .game-screen {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            text-align: center;
-            position: relative;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        /* Login Screen Styles */
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-        }
-
-        .input-group label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #feca57;
-        }
-
-        .input-field {
-            padding: 15px;
-            border: none;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-size: 1.1em;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .input-field::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .input-field:focus {
-            outline: none;
-            border: 2px solid #48dbfb;
-            box-shadow: 0 0 15px rgba(72, 219, 251, 0.3);
-        }
-
-        /* Profile Screen Styles */
-        .profile-header {
-            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .profile-name {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .rating-badge {
-            display: inline-block;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .stat-value {
-            font-size: 1.8em;
-            font-weight: bold;
-            color: #48dbfb;
-        }
-
-        .stat-label {
-            font-size: 0.8em;
-            opacity: 0.8;
-            margin-top: 5px;
-        }
-
-        .achievement-section {
-            margin-top: 20px;
-            text-align: left;
-            margin-bottom: 80px; /* Added margin to prevent overlapping */
-        }
-
-        .achievement {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            margin: 5px 0;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .achievement-icon {
-            font-size: 1.5em;
-            margin-right: 10px;
-        }
-
-        .dev-credit {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.7em;
-            opacity: 0.6;
-            text-align: center;
-            color: #888;
-        }
-
-        .stats {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .stat-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 15px;
-            font-size: 0.9em;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .timer {
-            background: linear-gradient(45deg, #ff6b6b, #feca57);
-            color: black;
-        }
-
-        .question-area {
-            margin: 30px 0;
-        }
-
-        .question {
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-bottom: 30px;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .options {
-            display: grid;
-            gap: 15px;
-        }
-
-        .grid-2 {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .grid-4 {
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-        }
-
-        .option-btn {
-            background: linear-gradient(45deg, #1a1a1a, #333333);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
             overflow: hidden;
         }
-
-        .option-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
-            background: linear-gradient(45deg, #2a2a2a, #404040);
-        }
-
-        .option-btn.correct {
-            background: linear-gradient(45deg, #00d2d3, #54a0ff);
-            animation: correctPulse 0.6s ease;
-        }
-
-        .option-btn.wrong {
-            background: linear-gradient(45deg, #ff3742, #ff6b6b);
-            animation: shake 0.6s ease;
-        }
-
-        @keyframes correctPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .mode-selector {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .mode-btn {
-            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 15px;
-            border-radius: 15px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .mode-btn:hover {
-            background: linear-gradient(45deg, #2a2a2a, #3d3d3d);
-            transform: translateY(-2px);
-        }
-
-        .start-btn {
-            background: linear-gradient(45deg, #ff6b6b, #feca57);
-            border: none;
-            color: black;
-            padding: 20px 40px;
-            border-radius: 25px;
-            font-size: 1.3em;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 20px 0;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .start-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
-        }
-
-        .nav-btn {
-            background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 15px;
-            font-size: 1em;
-            cursor: pointer;
-            margin: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-btn:hover {
-            background: linear-gradient(45deg, #2a2a2a, #3d3d3d);
-            transform: translateY(-2px);
-        }
-
-        .feedback {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 3em;
-            font-weight: bold;
-            opacity: 0;
-            animation: feedbackAnim 1s ease;
-        }
-
-        @keyframes feedbackAnim {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-        }
-
-        .game-over-screen {
-            text-align: center;
-        }
-
-        .final-score {
-            font-size: 3em;
-            font-weight: bold;
-            color: #feca57;
-            margin: 20px 0;
-        }
-
-        .performance-stats {
-            margin: 20px 0;
-        }
-
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .rating-novice { background: linear-gradient(45deg, #95a5a6, #bdc3c7); color: black; }
-        .rating-apprentice { background: linear-gradient(45deg, #f39c12, #e67e22); color: black; }
-        .rating-skilled { background: linear-gradient(45deg, #3498db, #2980b9); color: white; }
-        .rating-expert { background: linear-gradient(45deg, #9b59b6, #8e44ad); color: white; }
-        .rating-master { background: linear-gradient(45deg, #e74c3c, #c0392b); color: white; }
-        .rating-grandmaster { background: linear-gradient(45deg, #f1c40f, #f39c12); color: black; }
-        .rating-legend { background: linear-gradient(45deg, #1abc9c, #16a085); color: white; }
-        .rating-mythic { background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb); color: black; animation: rainbow 2s infinite; }
-
-        @keyframes rainbow {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-
-        .welcome-user {
-            color: #48dbfb;
-            margin-bottom: 10px;
-        }
-    
-/* top-right navigation for game/profile */
-.top-nav {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    display: flex;
-    gap: 8px;
-    z-index: 20;
-}
-.nav-top-btn {
-    padding: 8px 12px;
-    border-radius: 12px;
-    font-size: 0.9em;
-    cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: linear-gradient(45deg, #1a1a1a, #2d2d2d);
-    color: white;
-}
-.nav-top-btn:hover { transform: translateY(-2px); }
-
-
-/* Accurate 2cm positional adjustments */
-.top-nav {
-    top: calc(12px - 2cm);
-}
-
-
-/* Adjust Home and Back button upward by 2 cm, keep dev-credit in original position */
-.top-nav {
-    top: calc(12px - 2cm);
-}
-
-.container {
-    padding: 15px;
-    max-width: 100%;
-}
-
-.game-screen {
-    padding: 20px 10px;
-}
-
-button {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.input-field {
-    width: 100%;
-    font-size: 1em;
-}
-
-.stats-grid {
-    grid-template-columns: 1fr;
-}
-
-.mode-selector {
-    grid-template-columns: 1fr;
-}
-
-.options.grid-4 {
-    grid-template-columns: 1fr 1fr;
-}
-
-.options.grid-2 {
-    grid-template-columns: 1fr;
-}
-
-.stat-row {
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.achievement {
-    flex-direction: column;
-    align-items: flex-start;
-}
-</style>
+    </style>
 </head>
 <body>
-<div class="container">
-<!-- Login Screen -->
-<div class="game-screen" id="loginScreen">
-<div class="header">
-<div class="logo">Brain Rush 🧠⚡</div>
-<div class="tagline">60 seconds. Pure mental adrenaline.</div>
-</div>
-<div class="login-form">
-<div class="input-group">
-<label for="playerName">Enter Your Name:</label>
-<input class="input-field" id="playerName" maxlength="20" placeholder="Your awesome name..." type="text"/>
-</div>
-<button class="start-btn" onclick="loginPlayer()">START YOUR JOURNEY! 🚀</button>
-</div>
-<div style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">
-                Your progress will be saved automatically!
-            </div>
-</div>
-<!-- Profile Screen -->
-<div class="game-screen hidden" id="profileScreen">
-<div class="top-nav">
-<button class="nav-top-btn" onclick="showMainMenu()">🏠 Home</button>
-</div>
-<div class="profile-header">
-<div class="profile-name" id="profileName">Player</div>
-<div class="rating-badge" id="ratingBadge">🎯 Novice Calculator</div>
-</div>
-<div class="stats-grid">
-<div class="stat-card">
-<div class="stat-value" id="highScore">0</div>
-<div class="stat-label">Highest Score</div>
-</div>
-<div class="stat-card">
-<div class="stat-value" id="avgScore">0</div>
-<div class="stat-label">Average Score</div>
-</div>
-<div class="stat-card">
-<div class="stat-value" id="maxStreak">0</div>
-<div class="stat-label">Best Streak</div>
-</div>
-<div class="stat-card">
-<div class="stat-value" id="gamesPlayed">0</div>
-<div class="stat-label">Games Played</div>
-</div>
-</div>
-<div class="achievement-section">
-<h3 style="margin-bottom: 15px;">🏆 Recent Achievements</h3>
-<div id="achievementsList">
-<div class="achievement">
-<span class="achievement-icon">🎯</span>
-<span>Welcome to Brain Rush! Start your first game to unlock more achievements.</span>
-</div>
-</div>
-</div>
-<button class="start-btn" onclick="showMainMenu()">PLAY GAME 🎮</button>
-<button class="nav-btn" onclick="resetProfile()">Reset Profile</button>
-<div class="dev-credit">
-                Developed &amp; Built by Zaid
-            </div>
-</div>
-<!-- Main Menu -->
-<div class="game-screen hidden" id="mainMenu">
-<div class="welcome-user" id="welcomeMessage">Welcome back, Champion!</div>
-<div class="header">
-<div class="logo">Brain Rush 🧠⚡</div>
-</div>
-<div class="mode-selector">
-<button class="mode-btn" onclick="selectMode('speed')">⚡ Speed Math</button>
-<button class="mode-btn" onclick="selectMode('oddeven')">🎲 Odd/Even</button>
-<button class="mode-btn" onclick="selectMode('compare')">⚖️ Compare</button>
-<button class="mode-btn" onclick="selectMode('make100')">💯 Make 100</button>
-<button class="mode-btn" onclick="selectMode('estimate')">🎯 Estimate</button>
-<button class="mode-btn" onclick="selectMode('mixed')">🔥 Mixed Rush</button>
-</div>
-<button class="start-btn" onclick="startGame()">START RUSH! 🚀</button>
-<div style="margin-top: 20px; font-size: 0.9em; opacity: 0.7;">
-                Selected Mode: <span id="selectedMode">Mixed Rush</span>
-</div>
-<div style="margin-top: 15px;">
-<button class="nav-btn" onclick="showProfile()">View Profile 👤</button>
-</div>
-</div>
-<!-- Game Screen -->
-<div class="game-screen hidden" id="gameScreen">
-<div class="top-nav">
-<button class="nav-top-btn" onclick="showMainMenu()">🏠 Home</button>
-<button class="nav-top-btn" onclick="showProfile()">⬅ Back</button>
-</div>
-<div class="stats">
-<div class="stat-item">Score: <span id="score">0</span></div>
-<div class="stat-item timer">Time: <span id="timer">60</span>s</div>
-<div class="stat-item">Streak: <span id="streak">0</span></div>
-</div>
-<div class="question-area">
-<div class="question" id="question">Loading...</div>
-<div class="options" id="options">
-<!-- Options will be generated here -->
-</div>
-</div>
-</div>
-<!-- Game Over Screen -->
-<div class="game-screen hidden" id="gameOverScreen">
-<div class="header">
-<div style="font-size: 2em; margin-bottom: 10px;">🎯 RUSH COMPLETE!</div>
-</div>
-<div class="final-score" id="finalScore">0</div>
-<div class="performance-stats">
-<div class="stat-row">
-<span>Questions Answered:</span>
-<span id="totalQuestions">0</span>
-</div>
-<div class="stat-row">
-<span>Accuracy:</span>
-<span id="accuracy">0%</span>
-</div>
-<div class="stat-row">
-<span>Best Streak:</span>
-<span id="bestStreak">0</span>
-</div>
-<div class="stat-row">
-<span>New Rating:</span>
-<span id="newRating">Novice</span>
-</div>
-</div>
-<div id="newAchievements" style="margin: 20px 0;"></div>
-<button class="start-btn" onclick="restartGame()">RUSH AGAIN! 🔥</button>
-<div>
-<button class="nav-btn" onclick="showProfile()">View Profile</button>
-<button class="nav-btn" onclick="backToMenu()">Main Menu</button>
-</div>
-</div>
-</div>
-<script>
-        // Player Data Structure
-        let playerData = {
-            name: '',
-            highScore: 0,
-            totalScore: 0,
-            gamesPlayed: 0,
-            maxStreak: 0,
-            achievements: [],
-            rating: 'novice',
-            totalQuestions: 0,
-            totalCorrect: 0,
-            joinDate: new Date().toISOString()
-        };
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
 
-        // Game state
-        let gameState = {
-            currentMode: 'mixed',
-            score: 0,
-            streak: 0,
-            bestStreak: 0,
-            timeLeft: 60,
-            totalQuestions: 0,
-            correctAnswers: 0,
-            isGameActive: false,
-            currentQuestion: null,
-            timer: null
-        };
+        const BableShooter = () => {
+          const canvasRef = useRef(null);
+          const [score, setScore] = useState(0);
+          const [gameOver, setGameOver] = useState(false);
+          const [audioStarted, setAudioStarted] = useState(false);
+          
+          const audioContextRef = useRef(null);
+          
+          const gameState = useRef({
+            player: { x: 0, y: 0, size: 50 },
+            bullets: [],
+            enemies: [],
+            lastEnemySpawn: 0,
+            score: 0
+          });
 
-        // Rating System
-        const ratingSystem = {
-            novice: { min: 0, max: 49, title: "🎯 Novice Calculator", description: "Just getting started!" },
-            apprentice: { min: 50, max: 149, title: "🔧 Apprentice Solver", description: "Learning the ropes!" },
-            skilled: { min: 150, max: 299, title: "⚡ Skilled Mathematician", description: "Getting good!" },
-            expert: { min: 300, max: 499, title: "🧠 Expert Analyst", description: "Impressive skills!" },
-            master: { min: 500, max: 749, title: "🔥 Master Calculator", description: "Elite performer!" },
-            grandmaster: { min: 750, max: 999, title: "👑 Grandmaster Genius", description: "Exceptional talent!" },
-            legend: { min: 1000, max: 1499, title: "🌟 Mathematical Legend", description: "Legendary abilities!" },
-            mythic: { min: 1500, max: Infinity, title: "🚀 Mythic Brain", description: "Beyond human limits!" }
-        };
-
-        // Achievements System
-        const achievements = [
-            { id: 'first_game', name: 'First Steps', icon: '👶', desc: 'Complete your first game' },
-            { id: 'score_50', name: 'Half Century', icon: '🏏', desc: 'Score 50+ points in a single game' },
-            { id: 'score_100', name: 'Century Maker', icon: '💯', desc: 'Score 100+ points in a single game' },
-            { id: 'streak_10', name: 'On Fire', icon: '🔥', desc: 'Get a 10+ answer streak' },
-            { id: 'streak_20', name: 'Unstoppable', icon: '⚡', desc: 'Get a 20+ answer streak' },
-            { id: 'perfect_game', name: 'Perfectionist', icon: '💎', desc: 'Complete a game with 100% accuracy' },
-            { id: 'speed_demon', name: 'Speed Demon', icon: '🏎️', desc: 'Answer 40+ questions in one game' },
-            { id: 'dedicated', name: 'Dedicated Player', icon: '🎯', desc: 'Play 10 games' },
-            { id: 'veteran', name: 'Veteran', icon: '🛡️', desc: 'Play 25 games' },
-            { id: 'legend_status', name: 'Living Legend', icon: '👑', desc: 'Reach Legend rating' }
-        ];
-
-        // Question generators (same as before)
-        const questionGenerators = {
-            speed: () => {
-                const a = Math.floor(Math.random() * 50) + 1;
-                const b = Math.floor(Math.random() * 50) + 1;
-                const operators = ['+', '-', '×'];
-                const op = operators[Math.floor(Math.random() * operators.length)];
-                
-                let answer;
-                switch(op) {
-                    case '+': answer = a + b; break;
-                    case '-': answer = Math.abs(a - b); break;
-                    case '×': answer = a * b; break;
-                }
-                
-                const question = `${a} ${op} ${b} = ?`;
-                const options = generateOptions(answer, 4);
-                
-                return { question, answer, options, type: '4-choice' };
-            },
-            
-            oddeven: () => {
-                const a = Math.floor(Math.random() * 20) + 1;
-                const b = Math.floor(Math.random() * 20) + 1;
-                const operations = [
-                    { op: '×', result: a * b },
-                    { op: '+', result: a + b },
-                    { op: '-', result: Math.abs(a - b) }
-                ];
-                const chosen = operations[Math.floor(Math.random() * operations.length)];
-                
-                const question = `${a} ${chosen.op} ${b} is...`;
-                const answer = chosen.result % 2 === 0 ? 'EVEN' : 'ODD';
-                const options = ['ODD', 'EVEN'];
-                
-                return { question, answer, options, type: '2-choice' };
-            },
-            
-            compare: () => {
-                const expr1 = generateExpression();
-                const expr2 = generateExpression();
-                
-                const question = `${expr1.text} vs ${expr2.text}`;
-                const answer = expr1.value > expr2.value ? 'LEFT' : 'RIGHT';
-                const options = ['LEFT', 'RIGHT'];
-                
-                return { question, answer, options, type: '2-choice' };
-            },
-            
-            make100: () => {
-                const a = Math.floor(Math.random() * 40) + 20;
-                const b = Math.floor(Math.random() * 30) + 10;
-                const c = 100 - a - b;
-                
-                if (c <= 0) return questionGenerators.make100();
-                
-                const question = `Make 100: ${a} + ${b} + ?`;
-                const answer = c;
-                const options = generateOptions(answer, 4);
-                
-                return { question, answer, options, type: '4-choice' };
-            },
-            
-            estimate: () => {
-                const a = Math.floor(Math.random() * 30) + 10;
-                const b = Math.floor(Math.random() * 30) + 10;
-                const actual = a * b;
-                
-                const question = `${a} × ${b} is closest to...`;
-                const roundTo = 100;
-                const answer = Math.round(actual / roundTo) * roundTo;
-                
-                const options = [
-                    answer - roundTo,
-                    answer,
-                    answer + roundTo,
-                    answer + roundTo * 2
-                ].filter(x => x > 0);
-                
-                return { question, answer, options, type: '4-choice' };
+          const playPuchPuchSound = () => {
+            if (!audioContextRef.current) return;
+            try {
+              const ctx = audioContextRef.current;
+              if (ctx.state === 'suspended') {
+                ctx.resume();
+              }
+              const oscillator = ctx.createOscillator();
+              const gainNode = ctx.createGain();
+              
+              oscillator.connect(gainNode);
+              gainNode.connect(ctx.destination);
+              
+              oscillator.frequency.value = 1000;
+              oscillator.type = 'square';
+              
+              gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
+              gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+              
+              oscillator.start(ctx.currentTime);
+              oscillator.stop(ctx.currentTime + 0.05);
+            } catch (e) {
+              console.error('Puch sound error:', e);
             }
-        };
-
-        function generateExpression() {
-            const type = Math.floor(Math.random() * 3);
-            switch(type) {
-                case 0:
-                    const a = Math.floor(Math.random() * 12) + 2;
-                    const b = Math.floor(Math.random() * 12) + 2;
-                    return { text: `${a}×${b}`, value: a * b };
-                case 1:
-                    const c = Math.floor(Math.random() * 50) + 10;
-                    const d = Math.floor(Math.random() * 50) + 10;
-                    return { text: `${c}+${d}`, value: c + d };
-                case 2:
-                    const e = Math.floor(Math.random() * 10) + 3;
-                    return { text: `${e}²`, value: e * e };
+          };
+          
+          const playPopSound = () => {
+            if (!audioContextRef.current) return;
+            try {
+              const ctx = audioContextRef.current;
+              if (ctx.state === 'suspended') {
+                ctx.resume();
+              }
+              const oscillator = ctx.createOscillator();
+              const gainNode = ctx.createGain();
+              
+              oscillator.connect(gainNode);
+              gainNode.connect(ctx.destination);
+              
+              oscillator.frequency.setValueAtTime(200, ctx.currentTime);
+              oscillator.frequency.exponentialRampToValueAtTime(40, ctx.currentTime + 0.15);
+              oscillator.type = 'triangle';
+              
+              gainNode.gain.setValueAtTime(0.4, ctx.currentTime);
+              gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+              
+              oscillator.start(ctx.currentTime);
+              oscillator.stop(ctx.currentTime + 0.15);
+            } catch (e) {
+              console.error('Pop sound error:', e);
             }
-        }
-
-        function generateOptions(correct, count) {
-            const options = [correct];
-            
-            while (options.length < count) {
-                let wrong;
-                if (correct < 20) {
-                    wrong = correct + Math.floor(Math.random() * 10) - 5;
-                } else {
-                    const variation = Math.floor(correct * 0.3);
-                    wrong = correct + Math.floor(Math.random() * variation * 2) - variation;
-                }
-                
-                if (wrong > 0 && !options.includes(wrong)) {
-                    options.push(wrong);
-                }
+          };
+          
+          const playBhaggSound = () => {
+            if (!audioContextRef.current) return;
+            try {
+              const ctx = audioContextRef.current;
+              if (ctx.state === 'suspended') {
+                ctx.resume();
+              }
+              const oscillator = ctx.createOscillator();
+              const gainNode = ctx.createGain();
+              
+              oscillator.connect(gainNode);
+              gainNode.connect(ctx.destination);
+              
+              oscillator.frequency.setValueAtTime(400, ctx.currentTime);
+              oscillator.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.4);
+              oscillator.type = 'sawtooth';
+              
+              gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+              gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+              
+              oscillator.start(ctx.currentTime);
+              oscillator.stop(ctx.currentTime + 0.4);
+            } catch (e) {
+              console.error('Bhagg sound error:', e);
             }
-            
-            for (let i = options.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [options[i], options[j]] = [options[j], options[i]];
-            }
-            
-            return options;
-        }
+          };
 
-        // Player Management Functions
-        function loadPlayerData() {
-            const saved = JSON.parse(localStorage.getItem('brainrush_player') || '{}');
-            if (saved.name) {
-                playerData = { ...playerData, ...saved };
-                return true;
-            }
-            return false;
-        }
-
-        function savePlayerData() {
-            localStorage.setItem('brainrush_player', JSON.stringify(playerData));
-        }
-
-        function loginPlayer() {
-            const name = document.getElementById('playerName').value.trim();
-            if (!name) {
-                alert('Please enter your name!');
-                return;
-            }
+          useEffect(() => {
+            const canvas = canvasRef.current;
+            const ctx = canvas.getContext('2d');
+            let animationId;
             
-            playerData.name = name;
-            savePlayerData();
-            showProfile();
-        }
-
-        function calculateRating() {
-            const totalScore = playerData.totalScore;
-            for (const [key, rating] of Object.entries(ratingSystem)) {
-                if (totalScore >= rating.min && totalScore <= rating.max) {
-                    return key;
-                }
-            }
-            return 'novice';
-        }
-
-        function updateRating() {
-            const oldRating = playerData.rating;
-            const newRating = calculateRating();
-            playerData.rating = newRating;
+            canvas.width = 800;
+            canvas.height = 600;
             
-            if (newRating !== oldRating) {
-                checkAchievement('rating_up');
-            }
-        }
-
-        function checkAchievement(type, value = 0) {
-            let newAchievements = [];
+            gameState.current.player.x = canvas.width / 2;
+            gameState.current.player.y = canvas.height - 100;
             
-            switch(type) {
-                case 'first_game':
-                    if (!playerData.achievements.includes('first_game')) {
-                        playerData.achievements.push('first_game');
-                        newAchievements.push(achievements.find(a => a.id === 'first_game'));
-                    }
-                    break;
-                case 'high_score':
-                    if (value >= 50 && !playerData.achievements.includes('score_50')) {
-                        playerData.achievements.push('score_50');
-                        newAchievements.push(achievements.find(a => a.id === 'score_50'));
-                    }
-                    if (value >= 100 && !playerData.achievements.includes('score_100')) {
-                        playerData.achievements.push('score_100');
-                        newAchievements.push(achievements.find(a => a.id === 'score_100'));
-                    }
-                    break;
-                case 'streak':
-                    if (value >= 10 && !playerData.achievements.includes('streak_10')) {
-                        playerData.achievements.push('streak_10');
-                        newAchievements.push(achievements.find(a => a.id === 'streak_10'));
-                    }
-                    if (value >= 20 && !playerData.achievements.includes('streak_20')) {
-                        playerData.achievements.push('streak_20');
-                        newAchievements.push(achievements.find(a => a.id === 'streak_20'));
-                    }
-                    break;
-                case 'perfect_game':
-                    if (!playerData.achievements.includes('perfect_game')) {
-                        playerData.achievements.push('perfect_game');
-                        newAchievements.push(achievements.find(a => a.id === 'perfect_game'));
-                    }
-                    break;
-                case 'speed_demon':
-                    if (value >= 40 && !playerData.achievements.includes('speed_demon')) {
-                        playerData.achievements.push('speed_demon');
-                        newAchievements.push(achievements.find(a => a.id === 'speed_demon'));
-                    }
-                    break;
-                case 'games_played':
-                    if (value >= 10 && !playerData.achievements.includes('dedicated')) {
-                        playerData.achievements.push('dedicated');
-                        newAchievements.push(achievements.find(a => a.id === 'dedicated'));
-                    }
-                    if (value >= 25 && !playerData.achievements.includes('veteran')) {
-                        playerData.achievements.push('veteran');
-                        newAchievements.push(achievements.find(a => a.id === 'veteran'));
-                    }
-                    break;
-                case 'legend_status':
-                    if (playerData.rating === 'legend' && !playerData.achievements.includes('legend_status')) {
-                        playerData.achievements.push('legend_status');
-                        newAchievements.push(achievements.find(a => a.id === 'legend_status'));
-                    }
-                    break;
-            }
-            
-            return newAchievements;
-        }
-
-        function displayNewAchievements(newAchievements) {
-            const container = document.getElementById('newAchievements');
-            if (newAchievements.length > 0) {
-                container.innerHTML = '<h3>🎉 New Achievements!</h3>';
-                newAchievements.forEach(achievement => {
-                    container.innerHTML += `
-                        <div class="achievement">
-                            <span class="achievement-icon">${achievement.icon}</span>
-                            <div>
-                                <strong>${achievement.name}</strong><br>
-                                <small>${achievement.desc}</small>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                container.innerHTML = '';
-            }
-        }
-
-        // Screen Navigation Functions
-        function showProfile() {
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('mainMenu').classList.add('hidden');
-            document.getElementById('gameScreen').classList.add('hidden');
-            document.getElementById('gameOverScreen').classList.add('hidden');
-            document.getElementById('profileScreen').classList.remove('hidden');
-            
-            updateProfileDisplay();
-        }
-
-        function showMainMenu() {
-            document.getElementById('profileScreen').classList.add('hidden');
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('gameScreen').classList.add('hidden');
-            document.getElementById('gameOverScreen').classList.add('hidden');
-            document.getElementById('mainMenu').classList.remove('hidden');
-            
-            document.getElementById('welcomeMessage').textContent = `Welcome back, ${playerData.name}! 🧠`;
-        }
-
-        function updateProfileDisplay() {
-            document.getElementById('profileName').textContent = playerData.name;
-            
-            const avgScore = playerData.gamesPlayed > 0 ? Math.round(playerData.totalScore / playerData.gamesPlayed) : 0;
-            
-            document.getElementById('highScore').textContent = playerData.highScore;
-            document.getElementById('avgScore').textContent = avgScore;
-            document.getElementById('maxStreak').textContent = playerData.maxStreak;
-            document.getElementById('gamesPlayed').textContent = playerData.gamesPlayed;
-            
-            const rating = ratingSystem[playerData.rating];
-            const ratingBadge = document.getElementById('ratingBadge');
-            ratingBadge.textContent = rating.title;
-            ratingBadge.className = `rating-badge rating-${playerData.rating}`;
-            
-            // Update achievements display
-            updateAchievementsDisplay();
-        }
-
-        function updateAchievementsDisplay() {
-            const container = document.getElementById('achievementsList');
-            
-            if (playerData.achievements.length === 0) {
-                container.innerHTML = `
-                    <div class="achievement">
-                        <span class="achievement-icon">🎯</span>
-                        <span>Complete your first game to start earning achievements!</span>
-                    </div>
-                `;
-                return;
-            }
-            
-            container.innerHTML = '';
-            
-            // Show recent achievements (last 3)
-            const recentAchievements = playerData.achievements.slice(-3);
-            recentAchievements.forEach(achievementId => {
-                const achievement = achievements.find(a => a.id === achievementId);
-                if (achievement) {
-                    container.innerHTML += `
-                        <div class="achievement">
-                            <span class="achievement-icon">${achievement.icon}</span>
-                            <div>
-                                <strong>${achievement.name}</strong><br>
-                                <small>${achievement.desc}</small>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-            
-            // Show total achievements count
-            container.innerHTML += `
-                <div class="achievement" style="opacity: 0.7; font-style: italic;">
-                    <span class="achievement-icon">🏆</span>
-                    <span>${playerData.achievements.length} of ${achievements.length} achievements unlocked</span>
-                </div>
-            `;
-        }
-
-        function resetProfile() {
-            if (confirm('Are you sure you want to reset all your progress? This cannot be undone!')) {
-                localStorage.removeItem('brainrush_player');
-                location.reload();
-            }
-        }
-
-        // Game Functions
-        function selectMode(mode) {
-            gameState.currentMode = mode;
-            const modeNames = {
-                'speed': 'Speed Math',
-                'oddeven': 'Odd/Even',
-                'compare': 'Compare',
-                'make100': 'Make 100',
-                'estimate': 'Estimate',
-                'mixed': 'Mixed Rush'
+            const drawPlayer = () => {
+              const p = gameState.current.player;
+              ctx.save();
+              ctx.translate(p.x, p.y);
+              
+              ctx.fillStyle = '#FF1493';
+              ctx.strokeStyle = '#8B008B';
+              ctx.lineWidth = 3;
+              ctx.beginPath();
+              ctx.moveTo(-40, 10);
+              ctx.lineTo(-25, -5);
+              ctx.lineTo(-10, -5);
+              ctx.lineTo(5, 10);
+              ctx.lineTo(-10, 25);
+              ctx.lineTo(-25, 25);
+              ctx.closePath();
+              ctx.fill();
+              ctx.stroke();
+              
+              ctx.fillStyle = '#00CED1';
+              ctx.strokeStyle = '#006994';
+              ctx.beginPath();
+              ctx.moveTo(10, -5);
+              ctx.lineTo(25, -5);
+              ctx.lineTo(40, 10);
+              ctx.lineTo(25, 25);
+              ctx.lineTo(10, 25);
+              ctx.lineTo(-5, 10);
+              ctx.closePath();
+              ctx.fill();
+              ctx.stroke();
+              
+              ctx.fillStyle = '#FFD700';
+              ctx.strokeStyle = '#FF8C00';
+              ctx.beginPath();
+              ctx.moveTo(-10, -5);
+              ctx.lineTo(10, -5);
+              ctx.lineTo(20, 10);
+              ctx.lineTo(10, 25);
+              ctx.lineTo(-10, 25);
+              ctx.lineTo(-20, 10);
+              ctx.closePath();
+              ctx.fill();
+              ctx.stroke();
+              
+              ctx.strokeStyle = '#9370DB';
+              ctx.lineWidth = 4;
+              ctx.beginPath();
+              ctx.moveTo(-17, -5);
+              ctx.lineTo(-17, -35);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(-20, -35);
+              ctx.lineTo(-20, -45);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(-14, -35);
+              ctx.lineTo(-14, -45);
+              ctx.stroke();
+              
+              ctx.beginPath();
+              ctx.moveTo(17, -5);
+              ctx.lineTo(17, -35);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(14, -35);
+              ctx.lineTo(14, -45);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(20, -35);
+              ctx.lineTo(20, -45);
+              ctx.stroke();
+              
+              ctx.fillStyle = '#FF6347';
+              ctx.strokeStyle = '#DC143C';
+              ctx.lineWidth = 3;
+              ctx.beginPath();
+              ctx.moveTo(-15, -55);
+              ctx.lineTo(0, -65);
+              ctx.lineTo(15, -55);
+              ctx.lineTo(15, -45);
+              ctx.lineTo(0, -35);
+              ctx.lineTo(-15, -45);
+              ctx.closePath();
+              ctx.fill();
+              ctx.stroke();
+              
+              ctx.fillStyle = '#32CD32';
+              ctx.strokeStyle = '#228B22';
+              ctx.beginPath();
+              ctx.arc(0, -65, 6, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.stroke();
+              
+              ctx.restore();
             };
-            document.getElementById('selectedMode').textContent = modeNames[mode];
-        }
-
-        function startGame() {
-            gameState.score = 0;
-            gameState.streak = 0;
-            gameState.bestStreak = 0;
-            gameState.timeLeft = 60;
-            gameState.totalQuestions = 0;
-            gameState.correctAnswers = 0;
-            gameState.isGameActive = true;
             
-            document.getElementById('mainMenu').classList.add('hidden');
-            document.getElementById('gameScreen').classList.remove('hidden');
+            const drawBullet = (bullet) => {
+              ctx.save();
+              
+              ctx.fillStyle = 'rgba(0, 255, 255, 0.3)';
+              ctx.beginPath();
+              ctx.arc(bullet.x, bullet.y, 8, 0, Math.PI * 2);
+              ctx.fill();
+              
+              ctx.fillStyle = '#00FFFF';
+              ctx.strokeStyle = '#FF1493';
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.arc(bullet.x, bullet.y, 5, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.stroke();
+              
+              ctx.restore();
+            };
             
-            gameState.timer = setInterval(updateTimer, 1000);
-            nextQuestion();
-        }
-
-        function updateTimer() {
-            gameState.timeLeft--;
-            document.getElementById('timer').textContent = gameState.timeLeft;
+            const drawEnemy = (enemy) => {
+              ctx.save();
+              ctx.translate(enemy.x, enemy.y);
+              
+              ctx.fillStyle = enemy.color;
+              ctx.beginPath();
+              ctx.arc(0, 0, 20, 0, Math.PI, true);
+              ctx.closePath();
+              ctx.fill();
+              ctx.strokeStyle = '#000';
+              ctx.lineWidth = 3;
+              ctx.stroke();
+              
+              ctx.fillStyle = '#FFFF00';
+              ctx.beginPath();
+              ctx.arc(0, -20, 8, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.strokeStyle = '#FF6600';
+              ctx.lineWidth = 2;
+              ctx.stroke();
+              
+              ctx.fillStyle = '#000';
+              ctx.beginPath();
+              ctx.arc(-8, -8, 3, 0, Math.PI * 2);
+              ctx.arc(8, -8, 3, 0, Math.PI * 2);
+              ctx.fill();
+              
+              ctx.restore();
+            };
             
-            if (gameState.timeLeft <= 0) {
-                endGame();
-            }
-        }
-
-        function nextQuestion() {
-            if (!gameState.isGameActive) return;
+            const spawnEnemy = () => {
+              const colors = ['#FF00FF', '#00FF00', '#FF8C00', '#9400D3', '#FF1493'];
+              gameState.current.enemies.push({
+                x: Math.random() * (canvas.width - 40) + 20,
+                y: -30,
+                speed: 1.5 + Math.random() * 2,
+                color: colors[Math.floor(Math.random() * colors.length)]
+              });
+            };
             
-            let questionData;
-            
-            if (gameState.currentMode === 'mixed') {
-                const modes = ['speed', 'oddeven', 'compare', 'make100', 'estimate'];
-                const randomMode = modes[Math.floor(Math.random() * modes.length)];
-                questionData = questionGenerators[randomMode]();
-            } else {
-                questionData = questionGenerators[gameState.currentMode]();
-            }
-            
-            gameState.currentQuestion = questionData;
-            gameState.totalQuestions++;
-            
-            document.getElementById('question').textContent = questionData.question;
-            
-            const optionsContainer = document.getElementById('options');
-            optionsContainer.innerHTML = '';
-            optionsContainer.className = `options ${questionData.type === '2-choice' ? 'grid-2' : 'grid-4'}`;
-            
-            questionData.options.forEach(option => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.textContent = option;
-                btn.onclick = () => selectAnswer(option);
-                optionsContainer.appendChild(btn);
-            });
-            
-            updateStats();
-        }
-
-        function selectAnswer(selectedAnswer) {
-            if (!gameState.isGameActive) return;
-            
-            const isCorrect = selectedAnswer === gameState.currentQuestion.answer;
-            
-            const buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach(btn => {
-                if (btn.textContent == selectedAnswer) {
-                    btn.classList.add(isCorrect ? 'correct' : 'wrong');
-                } else if (btn.textContent == gameState.currentQuestion.answer) {
-                    btn.classList.add('correct');
-                }
-                btn.onclick = null;
-            });
-            
-            if (isCorrect) {
-                gameState.score++;
-                gameState.streak++;
-                gameState.correctAnswers++;
+            const gameLoop = (timestamp) => {
+              const gs = gameState.current;
+              
+              const time = timestamp * 0.001;
+              const gradient = ctx.createRadialGradient(
+                canvas.width / 2 + Math.sin(time) * 100,
+                canvas.height / 2 + Math.cos(time) * 100,
+                100,
+                canvas.width / 2,
+                canvas.height / 2,
+                canvas.width
+              );
+              gradient.addColorStop(0, `hsl(${(time * 50) % 360}, 80%, 60%)`);
+              gradient.addColorStop(0.5, `hsl(${(time * 50 + 120) % 360}, 80%, 50%)`);
+              gradient.addColorStop(1, `hsl(${(time * 50 + 240) % 360}, 80%, 40%)`);
+              ctx.fillStyle = gradient;
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+              ctx.lineWidth = 2;
+              for (let i = 0; i < canvas.width; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(i + (time * 20) % 40, 0);
+                ctx.lineTo(i + (time * 20) % 40, canvas.height);
+                ctx.stroke();
+              }
+              for (let i = 0; i < canvas.height; i += 40) {
+                ctx.beginPath();
+                ctx.moveTo(0, i + (time * 20) % 40);
+                ctx.lineTo(canvas.width, i + (time * 20) % 40);
+                ctx.stroke();
+              }
+              
+              ctx.fillStyle = 'rgba(255, 0, 255, 0.15)';
+              for (let i = 0; i < 8; i++) {
+                ctx.beginPath();
+                ctx.arc(
+                  Math.sin(time * 0.5 + i * 0.8) * 300 + canvas.width / 2,
+                  Math.cos(time * 0.7 + i * 0.6) * 200 + canvas.height / 2,
+                  20 + Math.sin(time + i) * 10,
+                  0,
+                  Math.PI * 2
+                );
+                ctx.fill();
+              }
+              
+              if (timestamp - gs.lastEnemySpawn > 1200) {
+                spawnEnemy();
+                gs.lastEnemySpawn = timestamp;
+              }
+              
+              gs.bullets = gs.bullets.filter(bullet => {
+                bullet.y -= 10;
+                if (bullet.y < 0) return false;
                 
-                if (gameState.streak > gameState.bestStreak) {
-                    gameState.bestStreak = gameState.streak;
+                let hit = false;
+                gs.enemies = gs.enemies.filter(enemy => {
+                  const dx = bullet.x - enemy.x;
+                  const dy = bullet.y - enemy.y;
+                  const distance = Math.sqrt(dx * dx + dy * dy);
+                  
+                  if (distance < 25) {
+                    for (let i = 0; i < 3; i++) {
+                      ctx.fillStyle = `rgba(255, ${Math.random() * 255}, 0, ${0.6 - i * 0.2})`;
+                      ctx.beginPath();
+                      ctx.arc(enemy.x, enemy.y, 30 + i * 15, 0, Math.PI * 2);
+                      ctx.fill();
+                    }
+                    
+                    gs.score += 10;
+                    setScore(gs.score);
+                    hit = true;
+                    playPopSound();
+                    return false;
+                  }
+                  return true;
+                });
+                
+                if (!hit) drawBullet(bullet);
+                return !hit;
+              });
+              
+              gs.enemies = gs.enemies.filter(enemy => {
+                enemy.y += enemy.speed;
+                
+                if (enemy.y > canvas.height) return false;
+                
+                const dx = enemy.x - gs.player.x;
+                const dy = enemy.y - gs.player.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 50) {
+                  setGameOver(true);
+                  playBhaggSound();
+                  return false;
                 }
                 
-                showFeedback('🔥');
-            } else {
-                gameState.streak = 0;
-                showFeedback('💥');
+                drawEnemy(enemy);
+                return true;
+              });
+              
+              drawPlayer();
+              
+              ctx.shadowColor = '#FF00FF';
+              ctx.shadowBlur = 15;
+              ctx.fillStyle = '#00FFFF';
+              ctx.strokeStyle = '#FF1493';
+              ctx.lineWidth = 4;
+              ctx.font = 'bold 32px Arial';
+              ctx.strokeText(`SCORE: ${gs.score}`, 20, 45);
+              ctx.fillText(`SCORE: ${gs.score}`, 20, 45);
+              ctx.shadowBlur = 0;
+              
+              if (!gameOver) {
+                animationId = requestAnimationFrame(gameLoop);
+              }
+            };
+            
+            const handleMouseMove = (e) => {
+              const rect = canvas.getBoundingClientRect();
+              gameState.current.player.x = e.clientX - rect.left;
+            };
+            
+            const shootInterval = setInterval(() => {
+              if (!gameOver) {
+                gameState.current.bullets.push({
+                  x: gameState.current.player.x,
+                  y: gameState.current.player.y - 65
+                });
+                playPuchPuchSound();
+              }
+            }, 180);
+            
+            canvas.addEventListener('mousemove', handleMouseMove);
+            animationId = requestAnimationFrame(gameLoop);
+            
+            return () => {
+              cancelAnimationFrame(animationId);
+              clearInterval(shootInterval);
+              canvas.removeEventListener('mousemove', handleMouseMove);
+            };
+          }, [gameOver]);
+          
+          const resetGame = () => {
+            setGameOver(false);
+            setScore(0);
+            gameState.current = {
+              player: { x: 400, y: 500, size: 50 },
+              bullets: [],
+              enemies: [],
+              lastEnemySpawn: 0,
+              score: 0
+            };
+          };
+          
+          const startAudio = () => {
+            try {
+              if (!audioContextRef.current) {
+                audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+              }
+              audioContextRef.current.resume();
+              setAudioStarted(true);
+              console.log('Audio Context State:', audioContextRef.current.state);
+              
+              const testOsc = audioContextRef.current.createOscillator();
+              const testGain = audioContextRef.current.createGain();
+              testOsc.connect(testGain);
+              testGain.connect(audioContextRef.current.destination);
+              testOsc.frequency.value = 440;
+              testGain.gain.value = 0.1;
+              testOsc.start();
+              testOsc.stop(audioContextRef.current.currentTime + 0.1);
+              console.log('Test sound played!');
+            } catch (e) {
+              console.error('Audio init error:', e);
             }
-            
-            setTimeout(nextQuestion, 1000);
-        }
+          };
 
-        function showFeedback(emoji) {
-            const feedback = document.createElement('div');
-            feedback.className = 'feedback';
-            feedback.textContent = emoji;
-            document.getElementById('gameScreen').appendChild(feedback);
-            
-            setTimeout(() => {
-                feedback.remove();
-            }, 1000);
-        }
+          return (
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-900 via-pink-600 to-yellow-500 p-4">
+              <div className="bg-gradient-to-r from-cyan-500 to-pink-500 rounded-lg shadow-2xl p-6 border-4 border-yellow-400">
+                <h1 className="text-5xl font-bold text-center mb-4 text-white drop-shadow-lg" style={{textShadow: '3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000'}}>
+                  🎯 BABLE SHOOTER 🎯
+                </h1>
+                <p className="text-center mb-4 text-white font-bold text-lg drop-shadow-md">
+                  Move mouse to vibe! Destroy the cringe! 🔥💥
+                </p>
+                
+                {!audioStarted && (
+                  <div className="text-center mb-4">
+                    <button
+                      onClick={startAudio}
+                      className="bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-bold py-3 px-8 rounded-full text-xl shadow-lg transform hover:scale-105 transition-transform border-4 border-yellow-400"
+                    >
+                      🔊 START WITH SOUND! 🔊
+                    </button>
+                  </div>
+                )}
+                
+                <canvas
+                  ref={canvasRef}
+                  className="border-4 border-purple-600 rounded-lg shadow-2xl cursor-crosshair"
+                  style={{ maxWidth: '100%', height: 'auto', boxShadow: '0 0 20px rgba(255,0,255,0.5)' }}
+                />
+                
+                {gameOver && (
+                  <div className="mt-6 text-center">
+                    <h2 className="text-4xl font-bold text-yellow-300 mb-2 drop-shadow-lg" style={{textShadow: '2px 2px 0 #000'}}>
+                      RIP BROTHER! 💀😭
+                    </h2>
+                    <p className="text-3xl text-white mb-4 font-bold drop-shadow-md">Score: {score}</p>
+                    <button
+                      onClick={resetGame}
+                      className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-4 px-10 rounded-full text-2xl shadow-lg transform hover:scale-110 transition-transform border-4 border-yellow-400"
+                    >
+                      RESPAWN! 🚀
+                    </button>
+                  </div>
+                )}
+                
+                <p className="text-center mt-4 text-white font-bold text-lg drop-shadow-md">
+                  No cap, this game slaps fr fr! 🎮💯
+                </p>
+              </div>
+            </div>
+          );
+        };
 
-        function updateStats() {
-            document.getElementById('score').textContent = gameState.score;
-            document.getElementById('streak').textContent = gameState.streak;
-        }
-
-        function endGame() {
-            gameState.isGameActive = false;
-            clearInterval(gameState.timer);
-            
-            // Update player data
-            playerData.gamesPlayed++;
-            playerData.totalScore += gameState.score;
-            
-            if (gameState.score > playerData.highScore) {
-                playerData.highScore = gameState.score;
-            }
-            
-            if (gameState.bestStreak > playerData.maxStreak) {
-                playerData.maxStreak = gameState.bestStreak;
-            }
-            
-            playerData.totalQuestions += gameState.totalQuestions;
-            playerData.totalCorrect += gameState.correctAnswers;
-            
-            updateRating();
-            
-            // Check for achievements
-            let newAchievements = [];
-            
-            if (playerData.gamesPlayed === 1) {
-                newAchievements = newAchievements.concat(checkAchievement('first_game'));
-            }
-            
-            newAchievements = newAchievements.concat(checkAchievement('high_score', gameState.score));
-            newAchievements = newAchievements.concat(checkAchievement('streak', gameState.bestStreak));
-            newAchievements = newAchievements.concat(checkAchievement('games_played', playerData.gamesPlayed));
-            newAchievements = newAchievements.concat(checkAchievement('speed_demon', gameState.totalQuestions));
-            
-            const accuracy = gameState.totalQuestions > 0 ? 
-                (gameState.correctAnswers / gameState.totalQuestions) * 100 : 0;
-            
-            if (accuracy === 100 && gameState.totalQuestions >= 5) {
-                newAchievements = newAchievements.concat(checkAchievement('perfect_game'));
-            }
-            
-            if (playerData.rating === 'legend') {
-                newAchievements = newAchievements.concat(checkAchievement('legend_status'));
-            }
-            
-            savePlayerData();
-            
-            // Show game over screen
-            document.getElementById('gameScreen').classList.add('hidden');
-            document.getElementById('gameOverScreen').classList.remove('hidden');
-            
-            // Update final stats
-            document.getElementById('finalScore').textContent = gameState.score;
-            document.getElementById('totalQuestions').textContent = gameState.totalQuestions;
-            document.getElementById('accuracy').textContent = Math.round(accuracy) + '%';
-            document.getElementById('bestStreak').textContent = gameState.bestStreak;
-            document.getElementById('newRating').textContent = ratingSystem[playerData.rating].title;
-            
-            displayNewAchievements(newAchievements);
-        }
-
-        function restartGame() {
-            document.getElementById('gameOverScreen').classList.add('hidden');
-            startGame();
-        }
-
-        function backToMenu() {
-            document.getElementById('gameOverScreen').classList.add('hidden');
-            showMainMenu();
-        }
-
-        // Initialize App
-        function initializeApp() {
-            if (loadPlayerData()) {
-                showProfile();
-            } else {
-                document.getElementById('loginScreen').classList.remove('hidden');
-            }
-            selectMode('mixed');
-        }
-
-        // Start the app
-        initializeApp();
+        ReactDOM.render(<BableShooter />, document.getElementById('root'));
     </script>
 </body>
 </html>
